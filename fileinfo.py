@@ -25,3 +25,31 @@ def text_word_list():        #获得文本单词列表
         x = x.replace(i,' ')
     x = x.lower().split()
     return x
+
+def text_format():
+    y = ''
+    for i in text_word_list():
+        y = y+i+' '
+    top0 = Toplevel()
+    top0.title('文本格式化')
+    top0.geometry('800x500')
+    textPad0 = ScrolledText(top0,width=600,height=300)
+    textPad0.pack()
+    textPad0.insert(1.0,y)
+
+def word_number():        #获得单词总数
+    showinfo(title='单词总数', message='单词总数为：'+str(len(text_word_list())))
+
+def word_frequency():        #获得词频
+    x = {}
+    for i in set(text_word_list()):
+        x[i] = text_word_list().count(i)
+    y = ''
+    for j in x:
+        y = y + j+':'+str(x[j])+'\n'
+    top1 = Toplevel()
+    top1.title('词频统计')
+    top1.geometry('600x300')
+    textPad1 = ScrolledText(top1,width=600,height=300)
+    textPad1.pack()
+    textPad1.insert(1.0,y)
