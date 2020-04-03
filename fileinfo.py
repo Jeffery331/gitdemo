@@ -70,3 +70,40 @@ def barshow():
     plt.ylabel('频数')
     plt.show()
     #词频可视化
+
+def high_frequency_word():        #获得高频单词(还未考虑第7及以后！)
+    global word_list
+    global number_list
+    x = {}
+    dict1 = {}
+    word_list = []
+    number_list = []
+    for k in set(text_word_list()):
+        x[k] = text_word_list().count(k)
+    for i in x:
+        if i not in stop_word_list:
+            dict1[i] = x[i]
+    for j in dict1:
+        word_list.append(j)
+        number_list.append(dict1[j])
+    while list_order_test(number_list) == 0:
+        for m in range(len(word_list)-1):
+            if number_list[m] < number_list[m+1]:
+                word_list[m],word_list[m+1] = word_list[m+1],word_list[m]
+                number_list[m],number_list[m+1] = number_list[m+1],number_list[m]
+    word_list = word_list[:6]
+    number_list = number_list[:6]
+    z = ''
+    for k in range(6):
+        z = z+word_list[k]+':'+str(number_list[k])+'\n'
+    
+    top2 = Toplevel()
+    top2.title('高频单词top6')
+    top2.geometry('300x180+200+200')
+    textPad2 = ScrolledText(top2,width=40,height=10)
+    textPad2.pack()
+    textPad2.insert(1.0,z)
+    button = Button(top2,text='显示统计柱状图',bg='Linen',width=42,height=2,command=barshow)
+    button.pack()
+#文本状态查看
+    
