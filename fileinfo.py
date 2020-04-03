@@ -53,3 +53,20 @@ def word_frequency():        #获得词频
     textPad1 = ScrolledText(top1,width=600,height=300)
     textPad1.pack()
     textPad1.insert(1.0,y)
+
+def list_order_test(x):        #列表冒泡检验
+    for i in range(len(x)-1):
+        if x[i+1] > x[i]:
+            return 0
+    return 1
+
+    #词频可视化
+def barshow():
+    global word_list
+    global number_list
+    plt.bar(word_list,number_list)
+    plt.title('高频单词top6')
+    plt.xlabel('单词')
+    plt.ylabel('频数')
+    plt.show()
+    #词频可视化
