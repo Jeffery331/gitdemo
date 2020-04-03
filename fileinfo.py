@@ -107,3 +107,118 @@ def high_frequency_word():        #获得高频单词(还未考虑第7及以后�
     button.pack()
 #文本状态查看
     
+#文件菜单
+def newfile():
+    global filename
+    window.title('未命名文件')
+    filename = ''
+    textPad.delete(1.0,END)
+
+def openfile():
+    global filename
+    filename = askopenfilename(defaultextension = '.txt')
+    if filename == '':
+        pass
+    else:
+        textPad.delete(1.0,END)
+        with open(filename,'r') as f:
+            textPad.insert(1.0,f.read())
+
+def savefile():
+    global filename
+    if filename != '': 
+        with open(filename,'w') as file:
+            file.write(textPad.get(1.0,END))
+    else:
+        savethefileas()
+
+def savethefileas():
+    global filename
+    filename = asksaveasfilename(initialfile= '未命名.txt', defaultextension='.txt')
+    if filename != '':
+        savefile()
+#文件菜单
+
+#关于菜单
+def author():
+    showinfo(title='关于', message='作者：Jeffery')
+def version():
+    showinfo(title='关于', message='当前版本为1.0')
+#关于菜单
+
+#编辑
+def clearall():        #清除
+    textPad.delete(1.0,END)
+def selectall():        #全选
+    textPad.tag_add('sel',1.0,END)
+def key_callback(event):
+    textPad.edit_separator()
+    textPad.bind(sequence='<Key>',func=key_callback)
+def undo():        #撤销
+    textPad.edit_undo()
+def redo():        #恢复
+    textPad.edit_redo()
+#编辑
+    
+#GUI
+    #主窗口
+window = Tk()
+window.title('Text Editor')
+window.geometry('800x500+100+100')
+    #主窗口
+
+    #菜单
+menubar = Menu(window)
+window['menu'] = menubar
+
+filemenu = Menu(menubar,tearoff=False)
+menubar.add_cascade(label='文件',menu=filemenu)
+filemenu.add_command(label='新建',command=newfile)
+filemenu.add_command(label='打开',command=openfile)
+filemenu.add_command(label='保存',command=savefile)
+filemenu.add_command(label='另存为',command=savethefileas)
+
+editmenu = Menu(menubar,tearoff=False)
+menubar.add_cascade(label='编辑',menu=editmenu)
+editmenu.add_command(label='清除',command=clearall)
+editmenu.add_command(label='全选',command=selectall)
+editmenu.add_command(label='撤销',command=undo)
+editmenu.add_command(label='恢复',command=redo)
+
+statusmenu = Menu(menubar,tearoff=False)
+menubar.add_cascade(label='文本状态查看',menu=statusmenu)
+statusmenu.add_command(label='文本格式化结果',command=text_format)
+statusmenu.add_command(label='单词总数',command=word_number)
+statusmenu.add_command(label='词频',command=word_frequency)
+statusmenu.add_command(label='高频单词',command=high_frequency_word)
+
+aboutmenu = Menu(menubar,tearoff=False)
+menubar.add_cascade(label='关于',menu=aboutmenu)
+aboutmenu.add_command(label='作者',command=author)
+aboutmenu.add_command(label='版本',command=version)
+    #菜单
+
+    #工具栏
+toolbar = Frame(window,bg='LightSkyBlue')
+Label(toolbar,text='便捷工具栏：',fg='LightCoral',bg='LightSkyBlue').grid(row=0,column=0)
+b1 = Button(toolbar,text='新建',command=newfile,bg='Linen')
+b2 = Button(toolbar,text='打开',command=openfile,bg='Linen')
+b3 = Button(toolbar,text='保存',command=savefile,bg='Linen')
+b4 = Button(toolbar,text='清除',command=clearall,bg='Linen')
+b5 = Button(toolbar,text='全选',command=selectall,bg='Linen')
+b6 = Button(toolbar,text='撤销',command=undo,bg='Linen')
+b7 = Button(toolbar,text='恢复',command=redo,bg='Linen')
+b = [b1,b2,b3,b4,b5,b6,b7]
+for i in range(7):
+    b[i].grid(row=0,column=i+1,padx=0,pady=2)
+toolbar.pack(fill=X)
+    #工具栏
+
+    #操作框
+textPad = ScrolledText(window,width=220,height=60,undo=True)
+textPad.edit_separator()
+textPad.pack()
+    #操作框
+
+window.mainloop()
+#GUI
